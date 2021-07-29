@@ -1,0 +1,57 @@
+FROM ubuntu:21.04
+
+WORKDIR /opt
+
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# https://github.com/neovim/neovim/wiki/Installing-Neovim
+
+RUN apt-get update && \
+    apt-get -y install neovim tmux git locales python3-dev cmake curl fzy ripgrep silversearcher-ag && \
+    sed -i '/es_ES.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install latest neovim from repo
+RUN curl -LO https://github.com/neovim/neovim/releases/download/v0.5.0/nvim-linux64.tar.gz && \
+    tar -xvf nvim-linux64.tar.gz && \
+    ln -s /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim
+
+
+ENV HOME_DEV /home/devuser
+RUN useradd --create-home --shell /bin/bash devuser
+USER devuser
+
+# Install vimplug
+RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME_DEV/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' && \
+    mkdir -p $HOME_DEV/.config/nvim/vim-plug
+
+WORKDIR $HOME_DEV
+
+# Rust stuff 
+RUN curl https://sh.rustup.rs -sSf | \
+    sh -s -- --default-toolchain stable -y
+
+RUN $HOME_DEV/.cargo/bin/rustup component add rls rust-analysis rust-src
+
+# Manually install solarized theme
+RUN mkdir -p $HOME_DEV/.config/nvim/colors && \
+    git clone https://github.com/altercation/vim-colors-solarized.git && \
+    cp $HOME_DEV/vim-colors-solarized/colors/solarized.vim $HOME_DEV/.config/nvim/colors
+
+COPY config/neovim/plugins.vim $HOME_DEV/.config/nvim/vim-plug/
+
+# Copy init.vim to user
+COPY config/neovim/init.vim $HOME_DEV/.config/nvim/
+
+# Install neovim plugins
+RUN nvim +slient +VimEnter +PlugInstall +UpdateRemotePlugins +qall 
+
+# Set language here using. https://stackoverflow.com/a/28406007
+ENV LANG es_ES.UTF-8
+ENV LANGUAGE es_ES:es  
+ENV LC_ALL es_ES.UTF-8
+
+

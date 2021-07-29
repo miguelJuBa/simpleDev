@@ -19,7 +19,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy .vimrc to user
-COPY config/.vimrc /root
+COPY config/vim/.vimrc /root
 
 # Set language here using. https://stackoverflow.com/a/28406007
 ENV LANG es_ES.UTF-8
