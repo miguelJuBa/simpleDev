@@ -14,8 +14,8 @@ set background=dark
 colorscheme solarized
 
 " Open fuzzy finder
-nnoremap <C-p> :FuzzyOpen<CR>
-nnoremap <C-f> :FuzzyGrep<CR>
+" nnoremap <C-p> :FuzzyOpen<CR>
+" nnoremap <C-f> :FuzzyGrep<CR>
 
 " Open nerdtree
 nnoremap <C-n> :NERDTreeToggle<CR>
@@ -45,3 +45,10 @@ set completeopt=noinsert,menuone,noselect
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+" Find files using Telescope command-line sugar.
+nnoremap <C-f> :Telescope find_files<CR>
+nnoremap <C-g> :Telescope live_grep<CR>
+" nnoremap <leader>ff <cmd>Telescope find_files<cr>
+" nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+" nnoremap <leader>fb <cmd>Telescope buffers<cr>
+" nnoremap <leader>fh <cmd>Telescope help_tags<cr>

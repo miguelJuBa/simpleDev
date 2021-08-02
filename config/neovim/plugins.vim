@@ -16,8 +16,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'jiangmiao/auto-pairs'
     " Bottom status bar
     Plug 'vim-airline/vim-airline'
-    " Fuzzy finder
-    Plug 'cloudhead/neovim-fuzzy'
     " Rust language server
     Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -30,5 +28,9 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'roxma/nvim-yarp'
     Plug 'ncm2/ncm2-bufword'
     Plug 'ncm2/ncm2-path'
-    
+
+    Plug 'nvim-lua/popup.nvim'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim'
+  
 call plug#end()

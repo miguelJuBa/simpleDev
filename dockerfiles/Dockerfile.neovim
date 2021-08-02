@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # https://github.com/neovim/neovim/wiki/Installing-Neovim
 
 RUN apt-get update && \
-    apt-get -y install neovim tmux git locales python3-dev cmake curl fzy ripgrep silversearcher-ag && \
+    apt-get -y install neovim tmux g++ git locales python3-dev pkg-config openssl libssl-dev cmake curl fzy ripgrep silversearcher-ag && \
     sed -i '/es_ES.UTF-8/s/^# //g' /etc/locale.gen && \
     locale-gen && \
     rm -rf /var/lib/apt/lists/*
@@ -18,6 +18,7 @@ RUN curl -LO https://github.com/neovim/neovim/releases/download/v0.5.0/nvim-linu
     tar -xvf nvim-linux64.tar.gz && \
     ln -s /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim
 
+RUN ldconfig
 
 ENV HOME_DEV /home/devuser
 RUN useradd --create-home --shell /bin/bash devuser
@@ -53,5 +54,3 @@ RUN nvim +slient +VimEnter +PlugInstall +UpdateRemotePlugins +qall
 ENV LANG es_ES.UTF-8
 ENV LANGUAGE es_ES:es  
 ENV LC_ALL es_ES.UTF-8
-
-
